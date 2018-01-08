@@ -105,6 +105,8 @@ class CircleChanger(object):
         self.circle = rg.Circle(rg.Point(x, y), radius)
         self.circle.fill_color = fill_color
         self.colors = colors
+        self.startcolor = fill_color
+        self.index = 0
 
     def __repr__(self):
         """
@@ -346,7 +348,6 @@ class CircleChanger(object):
             self.swell_or_shrink_once(-amount_to_swell_or_shrink)
             self.draw()
 
-
     def swallow(self, other_circle_changer):
         """
         What comes in:
@@ -373,7 +374,7 @@ class CircleChanger(object):
             :rtype CircleChanger
         """
         ################################################################
-        # TODO: 6.
+        # Done: 6.
         #   First, READ the doc-string (specification) above.
         #   Second, READ the   run_test_swallow   function (below).
         #   Third, implement and test this method.
@@ -387,10 +388,10 @@ class CircleChanger(object):
                              other_circle_changer.circle.center)
         x = newpoint.x
         y = newpoint.y
-        radius =
+        radius = newpoint.get_distance_from(other_circle_changer.circle.center)
         fill_color = 'red'
-        colors =
-        CircleChanger(x, y, radius, fill_color, colors)
+        colors = self.colors + other_circle_changer.colors
+        return CircleChanger(x, y, radius, fill_color, colors)
 
     def change_color(self, index_of_color):
         """
@@ -412,11 +413,13 @@ class CircleChanger(object):
             :type index_of_color: int
         """
         ################################################################
-        # TODO: 7.
+        # Done: 7.
         #   First, READ the doc-string (specification) above.
         #   Second, READ the   run_test_change_color   function (below).
         #   Third, implement and test this method.
         ################################################################
+
+        self.circle.fill_color = self.colors[index_of_color]
 
     def change_to_original_color(self):
         """
@@ -429,11 +432,13 @@ class CircleChanger(object):
                was constructed.
         """
         ################################################################
-        # TODO: 8.
+        # Done: 8.
         #   First, READ the doc-string (specification) above.
         #   Second, READ the   run_test_change_to_original_color   function
         #   (below).  Third, implement and test this method.
         ################################################################
+
+        self.circle.fill_color = self.startcolor
 
     def change_to_next_color_in_tuple(self):
         """
@@ -468,11 +473,16 @@ class CircleChanger(object):
         fill color have no effect on or interaction with this method.
         """
         ################################################################
-        # TODO: 9.
+        # Done: 9.
         #   First, READ the doc-string (specification) above.
         #   Second, READ the   run_test_change_to_next_color_in_tuple
         #   function (below).  Third, implement and test this method.
         ################################################################
+
+        self.circle.fill_color = self.colors[self.index]
+        self.index = self.index + 1
+        if self.index == len(self.colors):
+            self.index = 0
 
 
 ########################################################################
